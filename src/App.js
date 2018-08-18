@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import reducers from './reducers'
+import createStore from './store'
 
 import Main from './pages/main'
 

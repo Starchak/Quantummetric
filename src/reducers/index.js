@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
-import Test from './test'
+import Filters from './filters'
 
 const reducers = combineReducers({
-  Test
+  Filters
 })
 
 export default reducers
