@@ -6,10 +6,105 @@ const squel = require("squel")
 const faker = require('faker')
 const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/quantummetrics';
 
+router.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
+
+router.post('/sortusers', (req, res, next) => {
+  let listStr = ''
+  let newSearchField = ''
+  let results = []
+  let filterQuery = squel.select().from("users")
+  let filters = JSON.parse(req.body.data)
+  console.log(filters);
+  filters.forEach(filter=>{
+    switch (filter.option) {
+      case 'Range':
+        filterQuery = filterQuery.clone().where(filter.field + " BETWEEN " + filter.from + " and " + filter.to)
+        break;
+      case 'Less than or equal':
+        filterQuery = filterQuery.clone().where(filter.field + " <= " + filter.searchText)
+        break;
+      case 'Equals':
+        if (filter.field === 'screen_width' || filter.field === 'screen_height' || filter.field === 'visits' || filter.field === 'page_response') {
+          filterQuery = filterQuery.clone().where(filter.field + " = " + filter.searchText)
+        } else {
+          filterQuery = filterQuery.clone().where(filter.field + " = '" + filter.searchText + "'")
+        }
+        break;
+      case 'Does not equals':
+        if (filter.field === 'screen_width' || filter.field === 'screen_height' || filter.field === 'visits' || filter.field === 'page_response') {
+          filterQuery = filterQuery.clone().where(filter.field + " <> " + filter.searchText)
+        } else {
+          filterQuery = filterQuery.clone().where(filter.field + " <> '" + filter.searchText + "'")
+        }
+        break;
+      case 'Greater than or equals':
+        filterQuery = filterQuery.clone().where(filter.field + " >= " + filter.searchText)
+        break;
+      case 'Starts with':
+        filterQuery = filterQuery.clone().where(filter.field + " LIKE '" + filter.searchText + "%'")
+        break;
+      case 'Does not starts with':
+        filterQuery = filterQuery.clone().where(filter.field + " NOT LIKE '" + filter.searchText + "%'")
+        break;
+      case 'Contains':
+        filterQuery = filterQuery.clone().where(filter.field + " LIKE '%" + filter.searchText + "%'")
+        break;
+      case 'Does not contains':
+        filterQuery = filterQuery.clone().where(filter.field + " NOT LIKE '%" + filter.searchText + "%'")
+        break;
+      case 'In list':
+        listStr = filter.searchText.split(" ")
+        newSearchField = "("
+        listStr.forEach(el=>{
+          newSearchField += "'" + el + "',"
+        })
+        newSearchField = newSearchField.substring(0, newSearchField.length - 1);
+        newSearchField += ")"
+        filterQuery = filterQuery.clone().where(filter.field + " IN " + newSearchField)
+        break;
+      case 'Not in list':
+        listStr = filter.searchText.split(" ")
+        newSearchField = "("
+        listStr.forEach(el=>{
+          newSearchField += "'" + el + "',"
+        })
+        newSearchField = newSearchField.substring(0, newSearchField.length - 1);
+        newSearchField += ")"
+        filterQuery = filterQuery.clone().where(filter.field + " NOT IN " + newSearchField)
+        break;
+      default:
+
+    }
+  })
+  console.log('' + filterQuery);
+  pg.connect(connectionString, (err, client, done) => {
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+    // SQL Query > Select Data
+    const query = client.query("" + filterQuery + ";");
+    query.on('row', (row) => {
+      results.push(row);
+    });
+    // After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+      console.log(results);
+      return res.json(results);
+    });
+  });
+})
 
 let generateUsers = () => {
   let id = 0;
@@ -58,10 +153,5 @@ let generateUsers = () => {
 }
 
 // generateUsers()
-
-app.post('/sortusers', (req, res) => {
-  console.log(req.body);
-  res.send('filter users')
-})
 
 module.exports = router;

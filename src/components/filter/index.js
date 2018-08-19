@@ -35,15 +35,15 @@ class Filter extends Component {
 
     //Predicate fields
     this.category = [
-      { value: 'User email', label: 'User email' },
-      { value: 'Screen width', label: 'Screen width' },
-      { value: 'Screen height', label: 'Screen height' },
-      { value: '# of visits', label: '# of visits' },
-      { value: 'First Name', label: 'First Name' },
-      { value: 'Last Name', label: 'Last Name' },
-      { value: 'Page Response time (ms)', label: 'Page Response time (ms)' },
-      { value: 'Domain', label: 'Domain' },
-      { value: 'Page Path', label: 'Page Path' }
+      { value: 'user_email', label: 'User email' },
+      { value: 'screen_width', label: 'Screen width' },
+      { value: 'screen_height', label: 'Screen height' },
+      { value: 'visits', label: '# of visits' },
+      { value: 'user_first_name', label: 'First Name' },
+      { value: 'user_last_name', label: 'Last Name' },
+      { value: 'page_response', label: 'Page Response time (ms)' },
+      { value: 'domain', label: 'Domain' },
+      { value: 'path', label: 'Page Path' }
     ]
 
     this.isNumbers = [
@@ -79,7 +79,7 @@ class Filter extends Component {
     this.setState({ optionDisabled: false });
     let saveFilterValues = this.state.filterValues
     saveFilterValues.field = selectedOption.value
-    saveFilterValues.options = null
+    saveFilterValues.option = null
     saveFilterValues.searchText = ''
     for (var i = 0; i < this.filter.getElementsByClassName('input').length; i++) {
       this.filter.getElementsByClassName('input')[i].value = ''
@@ -89,7 +89,7 @@ class Filter extends Component {
       filter: this.state.filterValues,
       id: this.props.filterId
     })
-    switch (selectedOption.value) {
+    switch (selectedOption.label) {
       case 'User email':
         this.setState({
           options: this.isString,

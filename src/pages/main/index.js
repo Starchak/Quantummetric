@@ -37,12 +37,13 @@ class Main extends Component {
 
   //Check existing filters (if they correct) and then search through them
   SearchButton = () => {
+    let noErrors = 0
     let filters = this.props.filters
     for (var i = 0; i < filters.length; i++) {
       if (
         filters[i].field !== null &&
         filters[i].option !== null &&
-        ((filters[i].searchText === null && filters[i].from !== '' && filters[i].to !== '') || filters[i].searchText !== '')) {
+        ((filters[i].searchText === '' && filters[i].from !== '' && filters[i].to !== '') || filters[i].searchText !== '')) {
           if (filters[i].from !== '' && (isNaN(filters[i].from) || isNaN(filters[i].to))) {
             this.setState({
               errorText: 'Please use only positiv numbers in ' + filters[i].field,
@@ -72,7 +73,7 @@ class Main extends Component {
               })
               break;
             } else {
-              server.Search(filters)
+              noErrors++
             }
           }
       } else {
@@ -82,6 +83,9 @@ class Main extends Component {
         })
         break;
       }
+    }
+    if (noErrors === filters.length) {
+      server.Search(filters)
     }
   }
 
