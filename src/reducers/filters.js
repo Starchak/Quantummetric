@@ -7,9 +7,9 @@ const Filters = (state = initialState, action) => {
       let filterPreset = {
         field: null,
         option: null,
-        searchText: null,
-        from: null,
-        to: null,
+        searchText: '',
+        from: '',
+        to: '',
         id: 0
       }
       filterPreset.id = filterId

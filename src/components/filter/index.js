@@ -22,9 +22,9 @@ class Filter extends Component {
       filterValues: {
         field: null,
         option: null,
-        searchText: null,
-        from: null,
-        to: null,
+        searchText: '',
+        from: '',
+        to: '',
         id: 0
       },
       isNumbers: false,
@@ -80,7 +80,10 @@ class Filter extends Component {
     let saveFilterValues = this.state.filterValues
     saveFilterValues.field = selectedOption.value
     saveFilterValues.options = null
-    saveFilterValues.searchText = null
+    saveFilterValues.searchText = ''
+    for (var i = 0; i < this.filter.getElementsByClassName('input').length; i++) {
+      this.filter.getElementsByClassName('input')[i].value = ''
+    }
     this.setState({ filterValues: saveFilterValues })
     this.props.ChangeFilterDispatch({
       filter: this.state.filterValues,
@@ -164,13 +167,12 @@ class Filter extends Component {
       optionsSelect: selectedOption,
       inputDisable: ''
     });
-    console.log(this.filter.getElementsByClassName('input'));
     for (var i = 0; i < this.filter.getElementsByClassName('input').length; i++) {
       this.filter.getElementsByClassName('input')[i].value = ''
     }
     let saveFilterValues = this.state.filterValues
     saveFilterValues.option = selectedOption.value
-    saveFilterValues.searchText = null
+    saveFilterValues.searchText = ''
     this.setState({ filterValues: saveFilterValues })
     this.props.ChangeFilterDispatch({
       filter: this.state.filterValues,

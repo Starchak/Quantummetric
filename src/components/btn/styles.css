@@ -11,3 +11,10 @@
   transition: all linear 0.1s; }
   .btn:hover {
     background-color: #56B3E3; }
+
+.disabled_btn {
+  background: #E7E7E7;
+  color: #555;
+  cursor: default; }
+  .disabled_btn:hover {
+    background-color: #E7E7E7; }
