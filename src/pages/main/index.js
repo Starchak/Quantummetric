@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 
-import {AddFilter} from '../../actions'
+import { AddFilter } from '../../actions'
 
 import Header from '../../components/header'
 import Filter from '../../components/filter'
@@ -10,13 +10,6 @@ import Button from '../../components/btn'
 import './styles.css'
 
 class Main extends Component {
-
-  constructor (props) {
-    super(props)
-    this.state = {
-
-    }
-  }
 
   componentDidMount () {
     //Add one filter field at the beginning
@@ -30,12 +23,11 @@ class Main extends Component {
   }
 
   render() {
-    console.log(this.props);
 		return (
 			<div className="main">
         <Header />
         {this.props.filters.map((filter, index) => (
-          <Filter key={index} filterId={index} />
+          <Filter key={filter.id} filterId={index} filter={filter} />
         ))}
         <Button className="add_btn" text="AND" onClick={this.ANDButton} />
       </div>
@@ -44,7 +36,6 @@ class Main extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state);
 	return {
     filters: state.Filters
 	}

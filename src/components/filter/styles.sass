@@ -1,7 +1,7 @@
 @import "../../var.sass"
 
 .filter
-  width: 500px
+  width: auto
   height: 60px
   margin: 10px 0
   display: flex
@@ -9,9 +9,9 @@
   justify-content: flex-start
   .delete_btn
     background: #fff
-    color: #000
+    color: #222
     width: 60px
-    height: 40px
+    height: 38px
     &:hover
       background: $hover_grey
 
@@ -22,3 +22,22 @@
   .options_select
     margin-left: 20px
     width: 175px
+
+  .string_input
+    margin-left: 20px
+
+  .is_box
+    margin-left: 20px
+    height: 38px
+    width: 50px
+    background: $hover_grey
+    color: #222
+    cursor: auto
+
+  .range
+    display: flex
+    align-items: center
+    justify-content: flex-start
+    .range_input
+      margin-left: 20px
+      width: 50px
