@@ -93,7 +93,7 @@ router.post('/sortusers', (req, res, next) => {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query("" + filterQuery + ";");
+    const query = client.query("" + filterQuery + " ORDER BY id ASC");
     query.on('row', (row) => {
       results.push(row);
     });

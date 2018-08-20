@@ -8,6 +8,7 @@ import Header from '../../components/header'
 import Filter from '../../components/filter'
 import Button from '../../components/btn'
 import Footer from '../../components/footer'
+import Users from '../../components/users'
 import ErrorBox from '../../components/errorBox'
 
 import './styles.css'
@@ -20,7 +21,8 @@ class Main extends Component {
     super(props)
     this.state = {
       isError: false,
-      errorText: ''
+      errorText: '',
+      users: []
     }
   }
 
@@ -85,7 +87,10 @@ class Main extends Component {
       }
     }
     if (noErrors === filters.length) {
-      server.Search(filters)
+      server.Search(filters, (result)=>{
+        console.log(result);
+        this.setState({users: result})
+      })
     }
   }
 
@@ -101,6 +106,7 @@ class Main extends Component {
           <Filter key={filter.id} filterId={index} filter={filter} />
         ))}
         <Button className="add_btn" text="AND" onClick={this.ANDButton} />
+        <Users users={this.state.users} />
         {this.state.isError ?
           <ErrorBox errorText={this.state.errorText} CloseError={this.CloseError} /> : null
         }

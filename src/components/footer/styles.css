@@ -6,7 +6,8 @@
   left: 0;
   display: flex;
   padding: 10px 0;
-  justify-content: space-between; }
+  justify-content: space-between;
+  background: #F9F9F9; }
   .footer .returned_results {
     align-items: flex-start;
     color: #A3A3A3;

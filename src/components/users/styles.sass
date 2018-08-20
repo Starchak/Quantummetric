@@ -1,0 +1,24 @@
+@import "../../var.sass"
+
+.users
+  width: 100%
+  height: auto
+  display: flex
+  align-items: flex-start
+  flex-flow: column
+  margin-top: 30px
+  padding-bottom: 75px
+
+  .users_raw
+    width: 100%
+    height: 50px
+    display: flex
+    justify-content: space-between
+    align-items: center
+    border-top: 2px solid $grey
+    .users_column
+      width: 10%
+      overflow: hidden
+      text-overflow: ellipsis
+    .email
+      margin-right: 5px
